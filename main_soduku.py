@@ -1,7 +1,12 @@
 import pygame
+from pygame import mixer
 from sudokuSolverAlgo import *
 from chooseLevel import *
 import time
+
+# lancer une musique en continu
+mixer.music.load("assets/sounds/background.wav")
+mixer.music.play(-1)
 
 # Définir des couleurs
 BLACK = (0, 0, 0)
@@ -55,9 +60,10 @@ def addNumToBoard(number, row, column, color):
 
 def finish():
     if solvedBoard == Board:
-        print("Bravo")
+        print("Bravo ! Vous avez gagné")
     else:
-        print("Fin de la partie :(")
+        print("Fin de la partie :( \n"
+              "Vous avez perdu")
 
 
 def addNewRect(row, col, color, width):
@@ -126,18 +132,21 @@ def drawInitBoard():
 # -------- Boucle du programme principal -----------
 if __name__ == "__main__":
     flag1 = True
-
+    # lancer une musique en continu
+    mixer.music.load("assets/sounds/background.wav")
+    mixer.music.play(-1)
     while flag1:
         level = chooseLevel()
         if level == 1 or level == 2 or level == 3:
-            print(level)
+            print("\n"
+                  "Le niveau chosi est le numéro ",level)
             flag1 = False
     pygame.display.set_caption("Sudoku ECE")
     screen = pygame.display.set_mode(size)
 
     sol = mainSolver(level)  # d'abord le script résout le sudoku tout seul
 
-    print("solveBoard")
+    print("La solution du SUDOKU généré est la suivante :")
     printBoard(sol)
 
     # ------ dessiner le tableau ------
@@ -181,11 +190,14 @@ if __name__ == "__main__":
             # ------ vérifier si la clé est bonne à sa place ------
             if int(key) == sol[row][column]:
                 Board[row][column] = key
-                flickering(0.1, GREEN)  # clignoter 0.2 secondes avec la couleur verte
+                flickering(0.1, GREEN)  # clignoter 0.2 seconde avec la couleur verte
                 addNumToBoard(key, row, column, L_GREEN)
             else:
                 flickering(0.1, RED)  # clignoter 0,2 seconde avec la couleur rouge
                 addNumToBoard(key, row, column, L_RED)
+                # son d'erreur si mauvais numéro
+                errorSound = mixer.Sound("assets/sounds/explosion.wav")
+                errorSound.play()
 
             # -----------------------------------------------
             drawTheBorder()
