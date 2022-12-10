@@ -1,0 +1,9 @@
+ if level == 1:
+            mixer.music.load("assets/sounds/level1.mp3")
+            mixer.music.play(-1)
+        if level == 2:
+            mixer.music.load("assets/sounds/nocturne_mof.mp3")
+            mixer.music.play(-1)
+        if level == 3:
+            mixer.music.load("assets/sounds/nocturne_mof.mp3")
+            mixer.music.play(-1)

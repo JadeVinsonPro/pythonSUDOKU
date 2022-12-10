@@ -5,8 +5,8 @@ from chooseLevel import *
 import time
 
 # lancer une musique en continu
-mixer.music.load("assets/sounds/background.wav")
-mixer.music.play(-1)
+#mixer.music.load("assets/sounds/nocturne_mof.mp3")
+#mixer.music.play(-1)
 
 # Définir des couleurs
 BLACK = (0, 0, 0)
@@ -133,13 +133,13 @@ def drawInitBoard():
 if __name__ == "__main__":
     flag1 = True
     # lancer une musique en continu
-    mixer.music.load("assets/sounds/background.wav")
-    mixer.music.play(-1)
     while flag1:
+        mixer.music.load("assets/sounds/background.wav")
+        mixer.music.play(-1)
         level = chooseLevel()
         if level == 1 or level == 2 or level == 3:
             print("\n"
-                  "Le niveau chosi est le numéro ",level)
+                  "Le niveau choisi est le numéro ",level)
             flag1 = False
     pygame.display.set_caption("Sudoku ECE")
     screen = pygame.display.set_mode(size)
@@ -159,6 +159,8 @@ if __name__ == "__main__":
         # --- Boucle d'événement principale
 
         for event in pygame.event.get():
+            mixer.music.load("assets/sounds/Babydoll.mp3")
+            mixer.music.play(-1)
             if event.type == pygame.QUIT:
                 done = True
             if event.type == pygame.KEYDOWN:
@@ -192,6 +194,8 @@ if __name__ == "__main__":
                 Board[row][column] = key
                 flickering(0.1, GREEN)  # clignoter 0.2 seconde avec la couleur verte
                 addNumToBoard(key, row, column, L_GREEN)
+                errorSound = mixer.Sound("assets/sounds/bonneReponse.wav")
+                errorSound.play()
             else:
                 flickering(0.1, RED)  # clignoter 0,2 seconde avec la couleur rouge
                 addNumToBoard(key, row, column, L_RED)
