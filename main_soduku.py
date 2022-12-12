@@ -1,12 +1,12 @@
+
 import pygame
 from pygame import mixer
 from sudokuSolverAlgo import *
 from chooseLevel import *
 import time
-
-# lancer une musique en continu
-#mixer.music.load("assets/sounds/nocturne_mof.mp3")
-#mixer.music.play(-1)
+pygame.mixer.pre_init(22050, -16, 2, 1024)
+pygame.init()
+pygame.mixer.init(22050,-16,2,1024)
 
 # Définir des couleurs
 BLACK = (0, 0, 0)
@@ -29,7 +29,7 @@ numbers_1to9 = [pygame.K_1, pygame.K_2, pygame.K_3, pygame.K_4, pygame.K_5, pyga
                 pygame.K_9]
 
 # Définir la largeur et la hauteur de l'écran [largeur, hauteur]
-size = (500, 500)
+size = (500, 520)
 pygame.init()
 font = pygame.font.Font('freesansbold.ttf', 32)
 
@@ -57,7 +57,8 @@ def addNumToBoard(number, row, column, color):
     screen.blit(text, textRect)
     drawTheBorder()
 
-
+# fin de la partie
+# affichage
 def finish():
     if solvedBoard == Board:
         print("Bravo ! Vous avez gagné")
@@ -134,8 +135,9 @@ if __name__ == "__main__":
     flag1 = True
     # lancer une musique en continu
     while flag1:
+        # lancer une musique en continu
         mixer.music.load("assets/sounds/background.wav")
-        mixer.music.play(-1)
+        mixer.music.play()
         level = chooseLevel()
         if level == 1 or level == 2 or level == 3:
             print("\n"
@@ -155,10 +157,17 @@ if __name__ == "__main__":
     drawInitBoard()
     readyForInput = False
     key = None
+
+    # mettre un timer sur le tableau
+    font_clock = pygame.font.SysFont(None, 32)
+    clock = pygame.time.Clock()
+    start_time = pygame.time.get_ticks()
+
     while not done:
         # --- Boucle d'événement principale
 
         for event in pygame.event.get():
+            #musique en boucle lors de la partie
             mixer.music.load("assets/sounds/Babydoll.mp3")
             mixer.music.play(-1)
             if event.type == pygame.QUIT:
@@ -188,12 +197,30 @@ if __name__ == "__main__":
                     readyForInput = True
                     # ------ maintenant attendre l'entrée de l'utilisateur -----
 
+        # initialisation du timer
+        counting_time = pygame.time.get_ticks() - start_time
+
+        # change milliseconds into minutes, seconds, milliseconds
+        counting_minutes = str(counting_time // 60000).zfill(2)
+        counting_seconds = str((counting_time % 60000) // 1000).zfill(2)
+        counting_millisecond = str(counting_time % 1000).zfill(3)
+
+        counting_string = "%s:%s:%s" % (counting_minutes, counting_seconds, counting_millisecond)
+        # print(counting_string)
+
+        counting_text = font_clock.render(str(counting_string), True, (0, 0, 0), (255, 255, 255))
+        counting_rect = counting_text.get_rect(width=110, bottomright=screen.get_rect().bottomright)
+
+        screen.blit(counting_text, counting_rect)
+
+        # vérification du nombre saisie
         if readyForInput and key is not None:
             # ------ vérifier si la clé est bonne à sa place ------
             if int(key) == sol[row][column]:
                 Board[row][column] = key
                 flickering(0.1, GREEN)  # clignoter 0.2 seconde avec la couleur verte
                 addNumToBoard(key, row, column, L_GREEN)
+                # son de réussite si bon numéro
                 errorSound = mixer.Sound("assets/sounds/bonneReponse.wav")
                 errorSound.play()
             else:
@@ -210,7 +237,7 @@ if __name__ == "__main__":
         key = None
         pygame.display.flip()
         pygame.display.update()
-
+        clock.tick(25)
 
 # Fermez la fenêtre et quittez.
 pygame.quit()

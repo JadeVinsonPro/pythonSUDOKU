@@ -24,6 +24,7 @@ def solve(board):
         return True
     else:
         row, col = find
+    # boucle pour
     for number in range(1, 10):
         if validCheck(board, number, (row, col)):
             board[row][col] = number

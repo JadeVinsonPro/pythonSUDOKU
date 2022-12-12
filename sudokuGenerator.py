@@ -1,7 +1,7 @@
 import random
 import copy
 
-
+# génération de la grille dans la console
 def printBoard(board):
     for i in range(len(board)):
         if i % 3 == 0 and i != 0:
@@ -14,7 +14,7 @@ def printBoard(board):
             else:
                 print(str(board[i][j]) + " ", end="")
 
-
+# trouver les cellules vides
 def findEmpty(board):
     for y in range(len(board)):
         for x in range(len(board[0])):
@@ -39,6 +39,7 @@ def validCheck(board, number, coordinates):
     box_x = coordinates[1] // 3
     box_y = coordinates[0] // 3
 
+
     for y in range(box_y * 3, box_y * 3 + 3):
         for x in range(box_x * 3, box_x * 3 + 3):
             if number == board[y][x] and (y, x) != coordinates:
@@ -46,7 +47,7 @@ def validCheck(board, number, coordinates):
 
     return True
 
-
+# génération
 def generateRandomBoard(board):
     # condition de fin :- arriver à la fin du tableau - la fonction findEmpty return NONE
     find = findEmpty(board)

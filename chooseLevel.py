@@ -1,5 +1,6 @@
 import pygame
 
+# Définir des couleurs
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 GREEN = (0, 255, 0)
@@ -10,6 +11,7 @@ GRAY = (80, 80, 80)
 YELLOW = (255, 255, 0)
 L_YELLOW = (255, 255, 150)
 
+#
 pygame.init()
 X = 450
 Y = 200
@@ -29,8 +31,9 @@ def drawButton(left, top, color, textInButton):
     textRectButton.center = (left + 30, top + 15)
     window.blit(textButton, textRectButton)
 
-
+# séléction du niveau de difficulté
 def chooseLevel():
+    # initialisation niveau 0
     level = 0
     text = font.render('Choisir le niveau de difficulté', True, BLACK, WHITE)
     textRect = text.get_rect()
@@ -42,6 +45,7 @@ def chooseLevel():
     while done:
         window.fill(WHITE)
         window.blit(text, textRect)
+        # création des boutons
         drawButton(70, 100, L_GREEN, "1")
         drawButton(190, 100, L_YELLOW, "2")
         drawButton(310, 100, L_RED, "3")
