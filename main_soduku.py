@@ -18,7 +18,7 @@ L_RED = (255, 204, 203)
 BLEU = (152, 180, 229)
 PURPLE = (228, 152, 229)
 YELLOW = (255, 255, 0)
-L_GRAY=(217, 221, 220)
+L_GRAY= (217, 221, 220)
 
 # Définir la LARGEUR et la HAUTEUR de chaque emplacement de la grille
 WIDTH = HEIGHT = 50
@@ -170,6 +170,12 @@ if __name__ == "__main__":
             #musique en boucle lors de la partie
             mixer.music.load("assets/sounds/Babydoll.mp3")
             mixer.music.play(-1)
+            # afficher le score
+            score = 0
+            font = pygame.font.SysFont("monospace", 16)
+            score_text = font.render(f"Score :", score, 1, (255,255,255))
+            screen.blit(score_text, (0,500))
+
             if event.type == pygame.QUIT:
                 done = True
             if event.type == pygame.KEYDOWN:
@@ -223,12 +229,16 @@ if __name__ == "__main__":
                 # son de réussite si bon numéro
                 errorSound = mixer.Sound("assets/sounds/bonneReponse.wav")
                 errorSound.play()
+                # bonus de points
+                score = score + 100
             else:
                 flickering(0.1, RED)  # clignoter 0,2 seconde avec la couleur rouge
                 addNumToBoard(key, row, column, L_RED)
                 # son d'erreur si mauvais numéro
                 errorSound = mixer.Sound("assets/sounds/explosion.wav")
                 errorSound.play()
+                # malus de points
+                score = score - 500
 
             # -----------------------------------------------
             drawTheBorder()
